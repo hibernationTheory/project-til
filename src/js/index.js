@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {IndexRoute, Route, Router, hashHistory} from 'react-router'
+import {IndexRoute, Route, Router, browserHistory} from 'react-router'
 
 import ContainerPage from './components/ContainerPage'
 import MainPage from './components/MainPage'
@@ -10,10 +10,11 @@ var css = require("!style!css!sass!../scss/styles.scss");
 
 
 ReactDOM.render(
-    <Router history={hashHistory}>
+    <Router history={browserHistory}>
         <Route path="/" component={ContainerPage}>
             <IndexRoute component={MainPage} />
-        	<Route path="post/:post" component={Post} />
+            <Route path="/page/:page" component={MainPage} />
+        	<Route path="/post/:post" component={Post} />
         </Route>
     </Router>,
   document.getElementById('react-container')

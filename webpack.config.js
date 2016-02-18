@@ -4,6 +4,9 @@ var config = {
 		filename:"bundle.js",
 		path:__dirname
 	},
+	"devServer": {
+		"historyApiFallback": true
+	},
 	"module": {
 		"loaders": [
 			{
