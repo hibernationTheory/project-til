@@ -7,8 +7,7 @@ import React, { Component } from 'react'
 class Container extends Component {
   render() {
     return (
-        <div className='MasterPage'>
-        	<h1>Header!!!!!</h1>
+        <div className='container-page'>
             { this.props.children }
         </div>
     );
