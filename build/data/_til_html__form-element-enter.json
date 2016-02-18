@@ -1,0 +1,19 @@
+{
+ "name": "_til_html__form-element-enter.md", 
+ "url": "https://gist.github.com/6da620cbb70b6e96ac80", 
+ "created_at": "2016-02-12T16:09:10Z", 
+ "comments_url": "https://api.github.com/gists/6da620cbb70b6e96ac80/comments", 
+ "content": "# Submit inside Form Element\n\nThe input elements inside a form element would automatically trigger a submit action when pressed the enter key. Kind of obvious but there certainly have been times where I implemented a onKeyDown event on the input elements.", 
+ "data": {
+  "size": 285, 
+  "raw_url": "https://gist.githubusercontent.com/hibernationTheory/6da620cbb70b6e96ac80/raw/fcc966c576df2c649a79378408f90b437fd75de6/_til_html__form-element-enter.md", 
+  "type": "text/plain", 
+  "language": "Markdown", 
+  "filename": "_til_html__form-element-enter.md"
+ }, 
+ "id": "6da620cbb70b6e96ac80", 
+ "metadata": {
+  "type": "til", 
+  "tags": "html"
+ }
+}

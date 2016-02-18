@@ -1,0 +1,4 @@
+.DS_Store
+build/data/*.md
+get_gists/
+node_modules/
