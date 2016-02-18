@@ -10,12 +10,26 @@ class MainPage extends Component {
 	constructor() {
 		super();
 		this.state = {
-			"data":[]
+			"data":[],
+			"postsPerPage":2,
+			"paginated":null,
+			"lastPage":null,
+			"page": -1
 		}
 	}
+	paginateData(data, page, postsPerPage) {
+		let ppp = postsPerPage
+		let currentData = data.slice((page - 1) * ppp, ((page - 1) * ppp) + ppp)
+		return currentData
+	}
+	componentWillMount() {
+		this.setState({
+			"page": this.props.params.page || 1
+		})
+	}
 	componentDidMount() {
-		var that = this;
-		window.fetch('./data/gist_data_all.json').then(function(response) {
+		let that = this;
+		window.fetch('/data/gist_data_all.json').then(function(response) {
 			if(response.ok) {
 				return response.json()
 			} else {
@@ -23,19 +37,38 @@ class MainPage extends Component {
 				return [];
 			}
 		}).then(function(json) {
+			let lastPage = false
+			let paginated = false
+			let page = that.state.page
+
+			let paginated_data = that.paginateData(json, page, that.state.postsPerPage)
+
+			if (page * that.state.postsPerPage > json.data) lastPage = true
+			if (paginated_data.length !== json.length) paginated = true
+
 			that.setState({
-				"data":json
+				"data":paginated_data,
+				"paginated":paginated,
+				"lastPage":lastPage
 			});
 		});
 	}
 	render() {
-		var elements = this.state.data.map((item) => {
+		let elements = this.state.data.map((item) => {
 							console.log(item)
 							return <Post data={item} />
 						})
+		let nextPageEl = (
+			<div className="post">
+				<a href={"page/" + (this.state.page + 1)} >Next Page</a>
+			</div>
+		)
+
 		return (
 			<div className="">
-				{ elements }
+				<div className="">{ elements }</div>
+				{ this.state.paginated ? nextPageEl : null }
+
 			</div>
 		)
 	}
