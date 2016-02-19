@@ -20,7 +20,7 @@ class PostInfo extends Component {
 					</li>
 					<li className="post-info__list__item">
 						{ item.metadata.tags.split(',').map((tag) => {
-							return <div className="post-info__list__item__tag">#{ tag }</div>
+							return <div className="post-info__list__item__tag">{ '#'+tag.trim() }</div>
 						}) }
 					</li>
 				</ul>
