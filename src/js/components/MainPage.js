@@ -3,72 +3,116 @@
 */
 
 import React, { Component } from 'react'
+import { Link } from 'react-router'
 
 import Post from './Post';
 
 class MainPage extends Component {
 	constructor() {
+		console.log('init')
 		super();
 		this.state = {
-			"data":[],
+			"paginatedData":[],
 			"postsPerPage":2,
 			"paginated":null,
 			"lastPage":null,
-			"page": -1
+			"page": 1
 		}
+		this.paginateData = this.paginateData.bind(this)
+		this.setPageState = this.setPageState.bind(this)
 	}
-	paginateData(data, page, postsPerPage) {
-		let ppp = postsPerPage
-		let currentData = data.slice((page - 1) * ppp, ((page - 1) * ppp) + ppp)
-		return currentData
-	}
-	componentWillMount() {
+	paginateData() {
+		console.log('paginage data')
+		let page = this.state.page
+		let data = this.props.gist_data
+		let ppp = this.state.postsPerPage
+		let paginatedData = data.slice((page - 1) * ppp, ((page - 1) * ppp) + ppp)
+
 		this.setState({
-			"page": this.props.params.page || 1
+			"paginatedData":paginatedData
 		})
 	}
-	componentDidMount() {
-		let that = this;
-		window.fetch('/data/gist_data_all.json').then(function(response) {
-			if(response.ok) {
-				return response.json()
-			} else {
-				console.log('Fetch Failed')
-				return [];
-			}
-		}).then(function(json) {
-			let lastPage = false
-			let paginated = false
-			let page = that.state.page
+	setPageState() {
+		console.log('set page state');
+		let firstPage = false
+		let lastPage = false
+		let paginated = false
+		let page = this.state.page
 
-			let paginated_data = that.paginateData(json, page, that.state.postsPerPage)
+		if (page * this.state.postsPerPage >= this.props.gist_data.length) lastPage = true
+		if (this.state.paginatedData.length !== this.props.gist_data.length) paginated = true
+		if (paginated && page === 1 ) firstPage = true
 
-			if (page * that.state.postsPerPage > json.data) lastPage = true
-			if (paginated_data.length !== json.length) paginated = true
-
-			that.setState({
-				"data":paginated_data,
-				"paginated":paginated,
-				"lastPage":lastPage
-			});
+		this.setState({
+			"firstPage":firstPage,
+			"lastPage":lastPage,
+			"paginated":paginated,
 		});
+		console.log('setPageStateData', this.state);
+	}
+	componentWillMount() {
+		console.log('will mount')
+		console.log(this.props.params)
+		this.setState({
+			"page": parseInt(this.props.params.page) || this.state.page
+		})
+		this.paginateData()
+		this.setPageState()
+	}
+	componentDidMount() {
+		console.log('did mount')
+		this.setState({
+			"page": parseInt(this.props.params.page) || this.state.page
+		})
+		this.paginateData()
+		this.setPageState()
+	}
+	componentWillReceiveProps() {
+		/*
+		console.log('will receive props!')
+		this.setState({
+			"page": parseInt(this.props.params.page) || this.state.page
+		})
+		console.log(this.props.params);
+		this.paginateData()
+		this.setPageState()
+		*/
 	}
 	render() {
-		let elements = this.state.data.map((item) => {
-							console.log(item)
+		console.log('render state is:', this.state)
+		let elements = this.state.paginatedData.map((item) => {
 							return <Post data={item} />
 						})
 		let nextPageEl = (
-			<div className="post">
-				<a href={"page/" + (this.state.page + 1)} >Next Page</a>
-			</div>
+			<a className="pagination__link--next" href={"/page/" + (this.state.page + 1)}>Older</a>
+			//<Link className="pagination__link--next" to={{pathname: "/page/" + (this.state.page + 1)}}>Older</Link>
 		)
-
+		let prevPageEl = (
+			<a className="pagination__link--prev" href={(this.state.page - 1 === 1 ? "/" : "/page/" + (this.state.page -1)) }>Newer</a>
+			//<Link className="pagination__link--prev" to={{pathname: "/page/" + (this.state.page - 1)}}>Newer</Link>
+		)
+		let pagination = (modifier, ...el) => (
+			<nav className={"pagination"+modifier}>
+				{el}
+			</nav>
+		)
+		let paginationResult = () => {
+			if (this.state.paginated) {
+				if (this.state.firstPage) {
+					return pagination('--flex-end', nextPageEl)
+				} else if (this.state.lastPage) {
+					return pagination('', prevPageEl)
+				} else {
+					return pagination('', prevPageEl, nextPageEl)
+				}
+			} else {
+				return null;
+			}
+		}
 		return (
 			<div className="">
 				<div className="">{ elements }</div>
-				{ this.state.paginated ? nextPageEl : null }
-
+				{ paginationResult() }
 			</div>
 		)
 	}

@@ -1,11 +1,7 @@
+
+
 .post {
-	padding-top:2.5vw;
-	padding-right: 4vw;
-	padding-bottom: 2vw;
-	padding-left: 2.5vw;
-	margin-bottom: 30px;
-	background-color: rgba(252,252,245,0.8);
-    box-shadow: -0.8vw 0.8vw 0 0 rgba(62,171,163,0.7);
+	@include post;
 }
 
 .post-content {
@@ -62,4 +58,7 @@
     padding-bottom: 3px;
     padding-left: 3px;
     padding-right: 7px;
+    margin-right: 7px;
+    margin-top: 3px;
+    margin-bottom:3px;
 }
