@@ -21,9 +21,8 @@ class MainPage extends Component {
 		this.paginateData = this.paginateData.bind(this)
 		this.setPageState = this.setPageState.bind(this)
 	}
-	paginateData() {
+	paginateData(page) {
 		console.log('paginage data')
-		let page = this.state.page
 		let data = this.props.gist_data
 		let ppp = this.state.postsPerPage
 		let paginatedData = data.slice((page - 1) * ppp, ((page - 1) * ppp) + ppp)
@@ -32,12 +31,11 @@ class MainPage extends Component {
 			"paginatedData":paginatedData
 		})
 	}
-	setPageState() {
+	setPageState(page) {
 		console.log('set page state');
 		let firstPage = false
 		let lastPage = false
 		let paginated = false
-		let page = this.state.page
 
 		if (page * this.state.postsPerPage >= this.props.gist_data.length) lastPage = true
 		if (this.state.paginatedData.length !== this.props.gist_data.length) paginated = true
@@ -52,31 +50,30 @@ class MainPage extends Component {
 	}
 	componentWillMount() {
 		console.log('will mount')
-		console.log(this.props.params)
+		let page = parseInt(this.props.params.page) || this.state.page
 		this.setState({
-			"page": parseInt(this.props.params.page) || this.state.page
+			"page": page
 		})
-		this.paginateData()
-		this.setPageState()
+		this.paginateData(page)
+		this.setPageState(page)
 	}
 	componentDidMount() {
 		console.log('did mount')
+		let page = parseInt(this.props.params.page) || this.state.page
 		this.setState({
-			"page": parseInt(this.props.params.page) || this.state.page
+			"page": page
 		})
-		this.paginateData()
-		this.setPageState()
+		this.paginateData(page)
+		this.setPageState(page)
 	}
-	componentWillReceiveProps() {
-		/*
-		console.log('will receive props!')
+	componentWillReceiveProps(nextProps) {
+		console.log('will receive')
+		let page = parseInt(nextProps.params.page) || this.state.page
 		this.setState({
-			"page": parseInt(this.props.params.page) || this.state.page
+			"page": page
 		})
-		console.log(this.props.params);
-		this.paginateData()
-		this.setPageState()
-		*/
+		this.paginateData(page)
+		this.setPageState(page)
 	}
 	render() {
 		console.log('render state is:', this.state)
@@ -84,12 +81,10 @@ class MainPage extends Component {
 							return <Post data={item} />
 						})
 		let nextPageEl = (
-			<a className="pagination__link--next" href={"/page/" + (this.state.page + 1)}>Older</a>
-			//<Link className="pagination__link--next" to={{pathname: "/page/" + (this.state.page + 1)}}>Older</Link>
+			<Link className="pagination__link--next" to={{pathname: "/page/" + (this.state.page + 1)}}>Older</Link>
 		)
 		let prevPageEl = (
-			<a className="pagination__link--prev" href={(this.state.page - 1 === 1 ? "/" : "/page/" + (this.state.page -1)) }>Newer</a>
-			//<Link className="pagination__link--prev" to={{pathname: "/page/" + (this.state.page - 1)}}>Newer</Link>
+			<Link className="pagination__link--prev" to={{pathname: "/page/" + (this.state.page - 1)}}>Newer</Link>
 		)
 		let pagination = (modifier, ...el) => (
 			<nav className={"pagination"+modifier}>
