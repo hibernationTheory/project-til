@@ -48,15 +48,6 @@ class MainPage extends Component {
 		});
 		console.log('setPageStateData', this.state);
 	}
-	componentWillMount() {
-		console.log('will mount')
-		let page = parseInt(this.props.params.page) || this.state.page
-		this.setState({
-			"page": page
-		})
-		this.paginateData(page)
-		this.setPageState(page)
-	}
 	componentDidMount() {
 		console.log('did mount')
 		let page = parseInt(this.props.params.page) || this.state.page
