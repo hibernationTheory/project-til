@@ -3,6 +3,7 @@
 */
 
 import React, { Component } from 'react'
+import Sidebar from './Sidebar'
 
 class Container extends Component {
 	constructor() {
@@ -30,9 +31,20 @@ class Container extends Component {
 			&& this.props.children
 			&& React.cloneElement(this.props.children, {"gist_data":this.state.gist_data})
 		return (
-			<div className='container-page'>
-				{ child }
+			<div className="">
+				<header className="container-page__header">
+					<h1 ><a href="/" className="container-page__header__text">Today I Learned</a></h1>
+				</header>
+				<div className="container-page row">
+					<div className="col-sm-3">
+						<Sidebar />
+					</div>
+					<div className="col-sm-9 col-xs-12">
+						{ child }
+					</div>
+				</div>
 			</div>
+
 		);
 	}
 }

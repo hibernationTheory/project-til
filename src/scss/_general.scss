@@ -13,5 +13,6 @@ body {
 	margin-bottom: 30px;
 	background-color: rgba(252,252,245,0.8);
 	box-shadow: -0.8vw 0.8vw 0 0 rgba(62,171,163,0.7);
+	z-index:100;
 	@content;
 }
