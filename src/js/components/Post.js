@@ -14,7 +14,6 @@ class Post extends Component {
 		let cheerio_markup = cheerio.load(markup)
 		cheerio_markup('h1').wrap(wrapper_el)
 		let updated_markup = cheerio_markup.html()
-		console.log(updated_markup)
 		return { __html: updated_markup };
 	}
 	render() {
