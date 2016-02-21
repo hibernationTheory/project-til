@@ -8,7 +8,7 @@ import { Link } from 'react-router'
 import Post from './Post';
 
 class MainPage extends Component {
-	constructor() {
+	constructor(props, context) {
 		console.log('init')
 		super();
 		this.state = {
@@ -20,25 +20,49 @@ class MainPage extends Component {
 		}
 		this.paginateData = this.paginateData.bind(this)
 		this.setPageState = this.setPageState.bind(this)
+		this.filterData = this.filterData.bind(this)
 	}
-	paginateData(page) {
+	filterData(category) {
+		//console.log('filter data', category)
+		let resultData = []
+		let categoryPosts = this.props.data.categories && this.props.data.categories[category]
+		if (categoryPosts && categoryPosts.length > 0) {
+			this.props.data.gist_data.forEach((data) => {
+				if (categoryPosts.includes(data["id"])) {
+					resultData.push(data)
+				}
+			})
+		} else {
+			resultData = this.props.data.gist_data
+		}
+		resultData.sort((data_prev, data_next) => {
+			if (data_next.sort_index - data_prev.sort_index > 0) return 1;
+			else if (data_next.sort_index - data_prev.sort_index == 0) return 0;
+			else {
+				return -1;
+			}
+		})
+		console.log(resultData)
+		return resultData
+	}
+	paginateData(page, data) {
 		console.log('paginage data')
-		let data = this.props.gist_data
 		let ppp = this.state.postsPerPage
 		let paginatedData = data.slice((page - 1) * ppp, ((page - 1) * ppp) + ppp)
 
 		this.setState({
 			"paginatedData":paginatedData
 		})
+		return paginatedData
 	}
-	setPageState(page) {
+	setPageState(page, filteredData, paginatedData) {
 		console.log('set page state');
 		let firstPage = false
 		let lastPage = false
 		let paginated = false
 
-		if (page * this.state.postsPerPage >= this.props.gist_data.length) lastPage = true
-		if (this.state.paginatedData.length !== this.props.gist_data.length) paginated = true
+		if (page * this.state.postsPerPage >= filteredData.length) lastPage = true
+		if (paginatedData.length !== filteredData.length) paginated = true
 		if (paginated && page === 1 ) firstPage = true
 
 		this.setState({
@@ -46,25 +70,28 @@ class MainPage extends Component {
 			"lastPage":lastPage,
 			"paginated":paginated,
 		});
-		console.log('setPageStateData', this.state);
 	}
 	componentDidMount() {
 		console.log('did mount')
+		let category = this.props.params.category
 		let page = parseInt(this.props.params.page) || this.state.page
 		this.setState({
 			"page": page
 		})
-		this.paginateData(page)
-		this.setPageState(page)
+		let filteredData = this.filterData(category)
+		let paginatedData = this.paginateData(page, filteredData)
+		this.setPageState(page, filteredData, paginatedData)
 	}
 	componentWillReceiveProps(nextProps) {
 		console.log('will receive')
+		let category = nextProps.params.category
 		let page = parseInt(nextProps.params.page) || this.state.page
 		this.setState({
 			"page": page
 		})
-		this.paginateData(page)
-		this.setPageState(page)
+		let filteredData = this.filterData(category)
+		let paginatedData = this.paginateData(page, filteredData)
+		this.setPageState(page, filteredData, paginatedData)
 	}
 	render() {
 		console.log('render state is:', this.state)

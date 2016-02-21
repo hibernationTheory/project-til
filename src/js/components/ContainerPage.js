@@ -44,7 +44,7 @@ class Container extends Component {
 	render() {
 		let child = this.state.gist_data.length > 0
 			&& this.props.children
-			&& React.cloneElement(this.props.children, {"gist_data":this.state.gist_data.reverse()})
+			&& React.cloneElement(this.props.children, {"data":this.state.all_data})
 		return (
 			<div className="">
 				<header className="container-page__header">

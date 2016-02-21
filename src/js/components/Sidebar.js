@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router'
 
 class Sidebar extends Component {
 	render() {
@@ -20,7 +21,7 @@ class Sidebar extends Component {
 						<ul className="sidebar__categories">
 							{ categories.map((category) => {
 								return <li className="sidebar__categories__item__tag-container">
-									<div className="sidebar__categories__item__tag">#{category}</div>
+									<Link className="sidebar__categories__item__tag" to={"/category/" + category }>#{category}</Link>
 								</li>
 							}) }
 						</ul>

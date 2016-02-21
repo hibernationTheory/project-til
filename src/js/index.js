@@ -15,6 +15,9 @@ ReactDOM.render(
             <IndexRoute component={MainPage} />
             <Route path="/page/:page" component={MainPage} />
         	<Route path="/post/:post" component={Post} />
+        	<Route path="/category/:category" component={MainPage}>
+        		<Route path=":page" component={MainPage} />
+        	</Route>
         </Route>
     </Router>,
   document.getElementById('react-container')
