@@ -27,17 +27,23 @@ class MainPage extends Component {
 		//console.log('filter data', category)
 		let resultData = []
 		let filter = null;
-		let categoryPosts = this.props.data.categories && this.props.data.categories[category]
-		if (categoryPosts && categoryPosts.length > 0) {
-			filter = category
-			this.props.data.gist_data.forEach((data) => {
-				if (categoryPosts.includes(data["id"])) {
-					resultData.push(data)
-				}
-			})
+		if (category) {
+			let categoryPosts = this.props.data.categories && this.props.data.categories[category]
+			if (categoryPosts && categoryPosts.length > 0) {
+				filter = category
+				this.props.data.gist_data.forEach((data) => {
+					if (categoryPosts.includes(data["id"])) {
+						resultData.push(data)
+					}
+				})
+			} else {
+				//if category is not valid
+				this.props.history.push('/')
+			}
 		} else {
 			resultData = this.props.data.gist_data
 		}
+
 		resultData.sort((data_prev, data_next) => {
 			if (data_next.sort_index - data_prev.sort_index > 0) return 1;
 			else if (data_next.sort_index - data_prev.sort_index == 0) return 0;
@@ -66,9 +72,13 @@ class MainPage extends Component {
 		let lastPage = false
 		let paginated = false
 
+		//redirect if the page doesn't exist
+		if (page> Math.ceil(filteredData.length / this.state.postsPerPage)) this.props.history.push('/')
+
 		if (page * this.state.postsPerPage >= filteredData.length) lastPage = true
 		if (paginatedData.length !== filteredData.length) paginated = true
 		if (paginated && page === 1 ) firstPage = true
+
 
 		this.setState({
 			"firstPage":firstPage,
