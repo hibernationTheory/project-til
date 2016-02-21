@@ -86,6 +86,13 @@ class MainPage extends Component {
 			"paginated":paginated,
 		});
 	}
+	resetPageState() {
+		this.setState({
+			"firstPage":null,
+			"lastPage":null,
+			"paginated":null
+		})
+	}
 	componentDidMount() {
 		console.log('did mount')
 		let category = this.props.params.category
@@ -100,7 +107,8 @@ class MainPage extends Component {
 	componentWillReceiveProps(nextProps) {
 		console.log('will receive')
 		let category = nextProps.params.category
-		let page = parseInt(nextProps.params.page) || this.state.page
+		let page = parseInt(nextProps.params.page) || 1
+		console.log(page, 'yay', nextProps.params.page)
 		this.setState({
 			"page": page
 		})
