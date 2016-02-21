@@ -6,8 +6,7 @@ import React, { Component } from 'react'
 import Sidebar from './Sidebar'
 // seems like if you are to use a .json, you can just import the data and use it.
 // for that to work your json file should be relative to the source js file.
-// import data from './gist_data_all.json'
-// console.log(data);
+import data from '../data/gist_data_all.json'
 
 class Container extends Component {
 	constructor() {
@@ -17,7 +16,7 @@ class Container extends Component {
 		}
 	}
 	componentDidMount() {
-
+		/*
 		window.fetch('/data/gist_data_all.json').then((response) => {
 			if(response.ok) {
 				return response.json()
@@ -34,12 +33,13 @@ class Container extends Component {
 				"gist_data":data["gist_data"],
 			});
 		});
-		/*
+		*/
+
 		this.setState({
 			"all_data":data,
 			"category_data":data["categories"],
 			"gist_data":data["gist_data"]
-		});*/
+		});
 	}
 	render() {
 		let child = this.state.gist_data.length > 0
