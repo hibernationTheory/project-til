@@ -15,9 +15,11 @@ class Sidebar extends Component {
 			<div className='sidebar'>
 				<div className="row">
 					<div className="col-xs-12">
+						{/*}
 						<form action="" className="sidebar__form">
 							<input type="search" className="sidebar__form__input-search"/>
 						</form>
+						*/}
 						<ul className="sidebar__categories">
 							{ categories.map((category) => {
 								return <li className="sidebar__categories__item__tag-container">
