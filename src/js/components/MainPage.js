@@ -12,6 +12,7 @@ class MainPage extends Component {
 		console.log('init')
 		super();
 		this.state = {
+			"filter":null,
 			"paginatedData":[],
 			"postsPerPage":2,
 			"paginated":null,
@@ -25,8 +26,10 @@ class MainPage extends Component {
 	filterData(category) {
 		//console.log('filter data', category)
 		let resultData = []
+		let filter = null;
 		let categoryPosts = this.props.data.categories && this.props.data.categories[category]
 		if (categoryPosts && categoryPosts.length > 0) {
+			filter = category
 			this.props.data.gist_data.forEach((data) => {
 				if (categoryPosts.includes(data["id"])) {
 					resultData.push(data)
@@ -42,11 +45,13 @@ class MainPage extends Component {
 				return -1;
 			}
 		})
-		console.log(resultData)
+		this.setState({
+			"filter":filter
+		})
 		return resultData
 	}
 	paginateData(page, data) {
-		console.log('paginage data')
+		//console.log('paginage data')
 		let ppp = this.state.postsPerPage
 		let paginatedData = data.slice((page - 1) * ppp, ((page - 1) * ppp) + ppp)
 
@@ -56,7 +61,7 @@ class MainPage extends Component {
 		return paginatedData
 	}
 	setPageState(page, filteredData, paginatedData) {
-		console.log('set page state');
+		//console.log('set page state');
 		let firstPage = false
 		let lastPage = false
 		let paginated = false
@@ -95,20 +100,32 @@ class MainPage extends Component {
 	}
 	render() {
 		console.log('render state is:', this.state)
+		let paginationPrefix = ''
 		let elements = this.state.paginatedData.map((item) => {
 							return <Post data={item} />
-						})
+						});
+		let filter = this.state.filter
+		if (filter) {
+			paginationPrefix = `/category/${filter}/`
+		} else {
+			paginationPrefix = "/page/"
+		}
+
+
 		let nextPageEl = (
-			<Link className="pagination__link--next" to={{pathname: "/page/" + (this.state.page + 1)}}>Older</Link>
+			<Link className="pagination__link--next" to={{pathname: paginationPrefix + (this.state.page + 1)}}>Older</Link>
 		)
+
 		let prevPageEl = (
-			<Link className="pagination__link--prev" to={{pathname: "/page/" + (this.state.page - 1)}}>Newer</Link>
+			<Link className="pagination__link--prev" to={{pathname: paginationPrefix + (this.state.page - 1)}}>Newer</Link>
 		)
+
 		let pagination = (modifier, ...el) => (
 			<nav className={"pagination"+modifier}>
 				{el}
 			</nav>
 		)
+
 		let paginationResult = () => {
 			if (this.state.paginated) {
 				if (this.state.firstPage) {
