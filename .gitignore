@@ -2,5 +2,4 @@
 build/data/*.md
 get_gists/
 node_modules/
-bundle.js
 build/data/_til_*
