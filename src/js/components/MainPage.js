@@ -23,10 +23,19 @@ class MainPage extends Component {
 		this.setPageState = this.setPageState.bind(this)
 		this.filterData = this.filterData.bind(this)
 	}
-	filterData(category) {
+	filterData(category, post) {
 		//console.log('filter data', category)
 		let resultData = []
 		let filter = null;
+		if (post) {
+			this.props.data.gist_data.forEach((data) => {
+				if (data.name.replace('.md', '') === post) {
+					resultData.push(data)
+				}
+			})
+			return resultData;
+		}
+
 		if (category) {
 			let categoryPosts = this.props.data.categories && this.props.data.categories[category]
 			if (categoryPosts && categoryPosts.length > 0) {
@@ -95,23 +104,25 @@ class MainPage extends Component {
 	}
 	componentDidMount() {
 		//console.log('did mount')
+		let post = this.props.params.post
 		let category = this.props.params.category
 		let page = parseInt(this.props.params.page) || this.state.page
 		this.setState({
 			"page": page
 		})
-		let filteredData = this.filterData(category)
+		let filteredData = this.filterData(category, post)
 		let paginatedData = this.paginateData(page, filteredData)
 		this.setPageState(page, filteredData, paginatedData)
 	}
 	componentWillReceiveProps(nextProps) {
 		//console.log('will receive')
+		let post = nextProps.params.post
 		let category = nextProps.params.category
 		let page = parseInt(nextProps.params.page) || 1
 		this.setState({
 			"page": page
 		})
-		let filteredData = this.filterData(category)
+		let filteredData = this.filterData(category, post)
 		let paginatedData = this.paginateData(page, filteredData)
 		this.setPageState(page, filteredData, paginatedData)
 	}

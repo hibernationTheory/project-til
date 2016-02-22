@@ -14,6 +14,13 @@ class Container extends Component {
 		this.state = {
 			"gist_data":{}
 		}
+		this.hideSidebar = this.hideSidebar.bind(this)
+	}
+	hideSidebar() {
+		if (this.props.params.post) {
+			return true
+		}
+		return false;
 	}
 	componentDidMount() {
 		/*
@@ -45,16 +52,17 @@ class Container extends Component {
 		let child = this.state.gist_data.length > 0
 			&& this.props.children
 			&& React.cloneElement(this.props.children, {"data":this.state.all_data})
+		let sidebarHidden = this.hideSidebar()
 		return (
 			<div className="">
 				<header className="container-page__header">
 					<h1 ><a href="/" className="container-page__header__text">Today I Learned</a></h1>
 				</header>
 				<div className="container-page row">
-					<div className="col-sm-3">
+					<div className={"col-sm-3" + (sidebarHidden ? ' hidden' : '')}>
 						<Sidebar data={this.state.all_data} />
 					</div>
-					<div className="col-sm-9 col-xs-12">
+					<div className={"col-xs-12 col-sm-" + (sidebarHidden ? '12' : '9')}>
 						{ child }
 					</div>
 				</div>

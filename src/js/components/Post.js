@@ -6,7 +6,7 @@ import PostInfo from './PostInfo'
 
 class Post extends Component {
 	parseMarkup(value) {
-		let wrapper_el = cheerio('<a class="post__title-link" href="post/'
+		let wrapper_el = cheerio('<a class="post__title-link" href="/#/post/'
 			+ this.props.data.name.replace('.md', '')
 			+ '"></a>'
 		)

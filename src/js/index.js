@@ -14,7 +14,7 @@ ReactDOM.render(
 		<Route path="/" component={ContainerPage}>
 			<IndexRoute component={MainPage} />
 			<Route path="/page/:page" component={MainPage} />
-			<Route path="/post/:post" component={Post} />
+			<Route path="/post/:post" component={MainPage} />
 			<Route path="/category/:category" component={MainPage}>
 				<Route path=":page" component={MainPage} />
 			</Route>
