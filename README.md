@@ -16,7 +16,7 @@ A "Today I Learned" themed page/blog designed to keep track of daily learnings. 
 
 To keep track of learnings and build up handson knowledge in React.
 
-# To-Do
+## To-Do
 
 
 
