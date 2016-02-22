@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router'
 
 class PostInfo extends Component {
 	render() {
 		let item = this.props.data
 		let date = new Date(item.created_at)
-		let month = date.getMonth();
-		let day = date.getDate();
-		let year = date.getFullYear();
-		let parsed_date = day + '/' + month + '/' + year;
+		let month = date.getMonth()
+		let day = date.getDate()
+		let year = date.getFullYear()
+		let parsed_date = day + '/' + month + '/' + year
 
 		return (
 			<div className='post-info'>
@@ -20,7 +21,8 @@ class PostInfo extends Component {
 					</li>
 					<li className="post-info__list__item">
 						{ item.metadata.tags.split(',').map((tag) => {
-							return <div className="post-info__list__item__tag">{ '#'+tag.trim() }</div>
+							let link = `/category/${tag.trim()}/`
+							return <Link className="post-info__list__item__tag" to={link}>{ '#'+tag.trim() }</Link>
 						}) }
 					</li>
 				</ul>

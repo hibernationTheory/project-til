@@ -1,5 +1,5 @@
 /*
-	Main Page which displays all the entries in a paginated manner.
+	Main Page which displays all the Posts in a paginated manner.
 */
 
 import React, { Component } from 'react'
