@@ -8,7 +8,7 @@ import { Link } from 'react-router'
 import Post from './Post';
 
 class MainPage extends Component {
-	constructor(props, context) {
+	constructor() {
 		//console.log('init')
 		super();
 		this.state = {
@@ -20,10 +20,24 @@ class MainPage extends Component {
 			"page": 1
 		}
 		this.paginateData = this.paginateData.bind(this)
+		this.searchData = this.searchData.bind(this)
 		this.setPageState = this.setPageState.bind(this)
 		this.filterData = this.filterData.bind(this)
 	}
-	filterData(category, post) {
+	searchData(searchTerm) {
+		if (!searchTerm) {
+			return []
+		}
+		let searchResultData = this.props.data.gist_data.filter((data) => {
+			if (data.content.indexOf(searchTerm) > -1 || data.metadata.tags.indexOf(searchTerm) > -1) {
+				return true
+			} else {
+				return false
+			}
+		})
+		return searchResultData
+	}
+	filterData(category, post, searchTerm) {
 		//console.log('filter data', category)
 		let resultData = []
 		let filter = null;
@@ -33,6 +47,11 @@ class MainPage extends Component {
 					resultData.push(data)
 				}
 			})
+			return resultData;
+		}
+
+		if (searchTerm) {
+			resultData = this.searchData(searchTerm)
 			return resultData;
 		}
 
@@ -82,7 +101,7 @@ class MainPage extends Component {
 		let paginated = false
 
 		//redirect if the page doesn't exist
-		if (page> Math.ceil(filteredData.length / this.state.postsPerPage)) this.props.history.push('/')
+		if (filteredData.length > 0 && page> Math.ceil(filteredData.length / this.state.postsPerPage)) this.props.history.push('/')
 
 		if (page * this.state.postsPerPage >= filteredData.length) lastPage = true
 		if (paginatedData.length !== filteredData.length) paginated = true
@@ -104,25 +123,39 @@ class MainPage extends Component {
 	}
 	componentDidMount() {
 		//console.log('did mount')
-		let post = this.props.params.post
-		let category = this.props.params.category
-		let page = parseInt(this.props.params.page) || this.state.page
+		let props = this.props
+
+		let searchTerm;
+		let post = props.params.post
+		let category = props.params.category
+		let page = parseInt(props.params.page) || this.state.page
+		let isSearch = props.location && props.location.search
+		if (isSearch) {
+			searchTerm = props.location.search.replace('?search=', '')
+		}
 		this.setState({
 			"page": page
 		})
-		let filteredData = this.filterData(category, post)
+		let filteredData = this.filterData(category, post, searchTerm)
 		let paginatedData = this.paginateData(page, filteredData)
 		this.setPageState(page, filteredData, paginatedData)
 	}
 	componentWillReceiveProps(nextProps) {
 		//console.log('will receive')
-		let post = nextProps.params.post
-		let category = nextProps.params.category
-		let page = parseInt(nextProps.params.page) || 1
+		let props = nextProps
+
+		let searchTerm;
+		let post = props.params.post
+		let category = props.params.category
+		let page = parseInt(props.params.page) || 1
+		let isSearch = props.location && props.location.search
+		if (isSearch) {
+			searchTerm = props.location.search.replace('?search=', '')
+		}
 		this.setState({
 			"page": page
 		})
-		let filteredData = this.filterData(category, post)
+		let filteredData = this.filterData(category, post, searchTerm)
 		let paginatedData = this.paginateData(page, filteredData)
 		this.setPageState(page, filteredData, paginatedData)
 	}
