@@ -22,7 +22,7 @@ class Sidebar extends Component {
 						*/}
 						<ul className="sidebar__categories">
 							{ categories.map((category) => {
-								return <li className="sidebar__categories__item__tag-container">
+								return <li className="sidebar__categories__item__tag-container" key={category}>
 									<Link className="sidebar__categories__item__tag" to={"/category/" + category }>#{category}</Link>
 								</li>
 							}) }

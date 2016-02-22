@@ -130,7 +130,7 @@ class MainPage extends Component {
 		//console.log('render state is:', this.state)
 		let paginationPrefix = ''
 		let elements = this.state.paginatedData.map((item) => {
-							return <Post data={item} />
+							return <Post data={item} key={item.id} />
 						});
 		let filter = this.state.filter
 		if (filter) {

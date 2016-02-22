@@ -21,8 +21,9 @@ class PostInfo extends Component {
 					</li>
 					<li className="post-info__list__item">
 						{ item.metadata.tags.split(',').map((tag) => {
-							let link = `/category/${tag.trim()}/`
-							return <Link className="post-info__list__item__tag" to={link}>{ '#'+tag.trim() }</Link>
+							tag = tag.trim()
+							let link = `/category/${tag}/`
+							return <Link key ={ tag } className="post-info__list__item__tag" to={link}>{ '#'+tag }</Link>
 						}) }
 					</li>
 				</ul>
