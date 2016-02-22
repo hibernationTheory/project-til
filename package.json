@@ -38,7 +38,7 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"start": "webpack-dev-server --content-base build/",
-		"deploy": "python get_gists.py && webpack -p && cd build && git push origin",
+		"deploy": "python get_gists.py && webpack -p && cd build && git commit -am 'update build' && git push origin",
 		"get_gists": "python get_gists.py"
 	},
 	"author": "",
