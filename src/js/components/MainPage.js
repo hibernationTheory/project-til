@@ -9,7 +9,7 @@ import Post from './Post';
 
 class MainPage extends Component {
 	constructor(props, context) {
-		console.log('init')
+		//console.log('init')
 		super();
 		this.state = {
 			"filter":null,
@@ -94,7 +94,7 @@ class MainPage extends Component {
 		})
 	}
 	componentDidMount() {
-		console.log('did mount')
+		//console.log('did mount')
 		let category = this.props.params.category
 		let page = parseInt(this.props.params.page) || this.state.page
 		this.setState({
@@ -105,10 +105,9 @@ class MainPage extends Component {
 		this.setPageState(page, filteredData, paginatedData)
 	}
 	componentWillReceiveProps(nextProps) {
-		console.log('will receive')
+		//console.log('will receive')
 		let category = nextProps.params.category
 		let page = parseInt(nextProps.params.page) || 1
-		console.log(page, 'yay', nextProps.params.page)
 		this.setState({
 			"page": page
 		})
@@ -117,7 +116,7 @@ class MainPage extends Component {
 		this.setPageState(page, filteredData, paginatedData)
 	}
 	render() {
-		console.log('render state is:', this.state)
+		//console.log('render state is:', this.state)
 		let paginationPrefix = ''
 		let elements = this.state.paginatedData.map((item) => {
 							return <Post data={item} />
